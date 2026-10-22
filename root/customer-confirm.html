@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تأكيد إتمام الخدمة</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cairo', sans-serif;
+        }
+        .confirm-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="confirm-card">
+        <h2 class="text-center mb-4"><i class="fas fa-check-circle"></i> تأكيد إتمام الخدمة</h2>
+        <form id="confirmForm">
+            <div class="mb-3">
+                <label>رقم هاتفك</label>
+                <input type="tel" class="form-control" id="customerPhone" required>
+            </div>
+            <div class="mb-3">
+                <label>رقم الحجز</label>
+                <input type="text" class="form-control" id="bookingId" required>
+            </div>
+            <div class="mb-3">
+                <label>كود التأكيد</label>
+                <input type="text" class="form-control" id="code" placeholder="الكود المكون من 6 أرقام" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100 py-2">تأكيد إتمام الخدمة</button>
+        </form>
+        <p class="text-muted text-center mt-3 small">
+            هذا الكود سيُعطى لك من العامل بعد انتهاء الخدمة
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('confirmForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const customerPhone = document.getElementById('customerPhone').value;
+            const bookingId = document.getElementById('bookingId').value;
+            const code = document.getElementById('code').value;
+            
+            try {
+                const response = await fetch('/api/customer/confirm-completion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ customerPhone, bookingId, code })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    Swal.fire({
+                        title: '✅ شكراً لك!',
+                        text: 'تم تأكيد إتمام الخدمة بنجاح',
+                        icon: 'success',
+                        confirmButtonText: 'حسناً'
+                    }).then(() => {
+                        document.getElementById('confirmForm').reset();
+                    });
+                } else {
+                    Swal.fire('❌ خطأ', data.message, 'error');
+                }
+            } catch (error) {
+                Swal.fire('❌ خطأ', 'حدث خطأ في الاتصال', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

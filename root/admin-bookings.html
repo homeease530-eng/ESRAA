@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الحجوزات - لوحة الأدمن</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        h1 {
+            color: #1e293b;
+            margin: 0;
+        }
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            background: #f1f5f9;
+            color: #2563eb;
+        }
+        .nav-btn.active {
+            background: #2563eb;
+            color: white;
+        }
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 10px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-card.pending h3 { color: #f59e0b; }
+        .stat-card.assigned h3 { color: #3b82f6; }
+        .stat-card.completed h3 { color: #10b981; }
+        .stat-card.total h3 { color: #8b5cf6; }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filters select, .filters input {
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+        }
+        .bookings-table {
+            background: white;
+            border-radius: 20px;
+            overflow-x: auto;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-pending { background: #fef3c7; color: #d97706; }
+        .status-assigned { background: #dbeafe; color: #2563eb; }
+        .status-completed { background: #d1fae5; color: #059669; }
+        .status-cancelled { background: #fee2e2; color: #dc2626; }
+        .btn-view { color: #2563eb; background: none; border: none; cursor: pointer; }
+        .btn-code { color: #8b5cf6; background: none; border: none; cursor: pointer; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .code-display {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .code-display span {
+            font-size: 32px;
+            letter-spacing: 4px;
+            font-weight: bold;
+            color: #d97706;
+        }
+        .image-preview {
+            max-width: 200px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-calendar-check"></i> إدارة الحجوزات</h1>
+            <div class="nav-links">
+                <a href="/admin-requests" class="nav-btn">📋 الطلبات</a>
+                <a href="/admin-workers" class="nav-btn">👷 العمال</a>
+                <a href="/admin-bookings" class="nav-btn active">📅 الحجوزات</a>
+            </div>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+
+        <div class="stats" id="statsContainer">
+            <div class="stat-card pending"><h3 id="statPending">-</h3><p>⏳ قيد الانتظار</p></div>
+            <div class="stat-card assigned"><h3 id="statAssigned">-</h3><p>🔄 قيد التنفيذ</p></div>
+            <div class="stat-card completed"><h3 id="statCompleted">-</h3><p>✅ مكتملة</p></div>
+            <div class="stat-card total"><h3 id="statTotal">-</h3><p>📊 إجمالي</p></div>
+        </div>
+
+        <div class="filters">
+            <select id="filterStatus">
+                <option value="all">كل الحالات</option>
+                <option value="pending">⏳ قيد الانتظار</option>
+                <option value="assigned">🔄 قيد التنفيذ</option>
+                <option value="completed">✅ مكتمل</option>
+                <option value="cancelled">❌ ملغي</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="🔍 بحث بالاسم أو رقم الهاتف...">
+            <button class="btn btn-secondary" onclick="applyFilters()">بحث</button>
+        </div>
+
+        <div class="bookings-table">
+            <div id="bookingsContent" class="loading">جاري تحميل البيانات...</div>
+        </div>
+    </div>
+
+    <!-- Modal التفاصيل -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3>تفاصيل الحجز</h3>
+                <button class="btn-close" onclick="closeModal()"></button>
+            </div>
+            <div id="modalBody"></div>
+            <div id="modalActions" class="mt-3"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = localStorage.getItem('adminToken');
+        let allBookings = [];
+
+        function checkAuth() {
+            if (!currentToken) {
+                const token = prompt('🔐 الرجاء إدخال توكن المشرف:');
+                if (token) {
+                    currentToken = token;
+                    localStorage.setItem('adminToken', token);
+                    loadData();
+                }
+            } else {
+                loadData();
+            }
+        }
+
+        async function loadData() {
+            await Promise.all([fetchBookings(), fetchStats()]);
+        }
+
+        async function fetchBookings() {
+            try {
+                const res = await fetch('/api/admin/bookings', {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    allBookings = data.bookings;
+                    applyFilters();
+                } else {
+                    document.getElementById('bookingsContent').innerHTML = `<div class="loading text-danger">${data.message}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('bookingsContent').innerHTML = '<div class="loading text-danger">خطأ في الاتصال</div>';
+            }
+        }
+
+        async function fetchStats() {
+            try {
+                const res = await fetch('/api/admin/stats', {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('statPending').innerText = data.stats.bookings || 0;
+                    // نحتاج إحصائيات أكثر تفصيلاً
+                }
+            } catch (error) {}
+            
+            // إحصائيات تفصيلية من الحجوزات
+            setTimeout(() => {
+                const pending = allBookings.filter(b => b.status === 'pending').length;
+                const assigned = allBookings.filter(b => b.status === 'assigned').length;
+                const completed = allBookings.filter(b => b.status === 'completed').length;
+                document.getElementById('statPending').innerText = pending;
+                document.getElementById('statAssigned').innerText = assigned;
+                document.getElementById('statCompleted').innerText = completed;
+                document.getElementById('statTotal').innerText = allBookings.length;
+            }, 500);
+        }
+
+        function getStatusText(status) {
+            const texts = { 'pending': '⏳ قيد الانتظار', 'assigned': '🔄 قيد التنفيذ', 'completed': '✅ مكتمل', 'cancelled': '❌ ملغي' };
+            return texts[status] || status;
+        }
+
+        function getStatusClass(status) {
+            return `status-${status}`;
+        }
+
+        function getServiceName(service) {
+            const names = { 'cleaning': '🧹 تنظيف', 'maintenance': '🔧 صيانة', 'medical': '🏥 رعاية طبية', 'special-needs': '🤝 احتياجات خاصة' };
+            return names[service] || service;
+        }
+
+        function applyFilters() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = [...allBookings];
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(b => b.status === statusFilter);
+            }
+            if (searchTerm) {
+                filtered = filtered.filter(b => 
+                    (b.customerName && b.customerName.toLowerCase().includes(searchTerm)) ||
+                    (b.customerPhone && b.customerPhone.includes(searchTerm)) ||
+                    (b.workerName && b.workerName.toLowerCase().includes(searchTerm))
+                );
+            }
+            renderTable(filtered);
+        }
+
+        function renderTable(bookings) {
+            if (bookings.length === 0) {
+                document.getElementById('bookingsContent').innerHTML = '<div class="loading">📭 لا توجد حجوزات</div>';
+                return;
+            }
+
+            let html = `<table><thead><tr><th>العميل</th><th>الهاتف</th><th>الخدمة</th><th>العامل</th><th>التاريخ</th><th>الوقت</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody>`;
+            
+            for (const booking of bookings) {
+                html += `<tr>
+                    <td><strong>${booking.customerName}</strong></td>
+                    <td>${booking.customerPhone}</td>
+                    <td>${getServiceName(booking.serviceName)}</td>
+                    <td>${booking.workerName || '❌ لم يعين بعد'}</td>
+                    <td>${booking.date}</td>
+                    <td>${booking.time}</td>
+                    <td><span class="status-badge ${getStatusClass(booking.status)}">${getStatusText(booking.status)}</span></td>
+                    <td>
+                        <button class="btn-view" onclick="viewDetails('${booking._id}')" title="تفاصيل"><i class="fas fa-eye"></i></button>
+                        ${booking.status === 'assigned' ? `<button class="btn-code" onclick="generateArrivalCode('${booking._id}')" title="إنشاء كود وصول"><i class="fas fa-key"></i></button>` : ''}
+                    </td>
+                </tr>`;
+            }
+            html += `</tbody></table>`;
+            document.getElementById('bookingsContent').innerHTML = html;
+        }
+
+        async function viewDetails(id) {
+            try {
+                const res = await fetch(`/api/admin/request/booking/${id}`, {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const b = data.request;
+                    let html = `
+                        <div class="mb-2"><strong>👤 العميل:</strong> ${b.customerName}</div>
+                        <div class="mb-2"><strong>📞 الهاتف:</strong> ${b.customerPhone}</div>
+                        <div class="mb-2"><strong>🛠️ الخدمة:</strong> ${getServiceName(b.serviceName)}</div>
+                        <div class="mb-2"><strong>👷 العامل:</strong> ${b.workerName || 'لم يعين'}</div>
+                        <div class="mb-2"><strong>📅 التاريخ:</strong> ${b.date}</div>
+                        <div class="mb-2"><strong>⏰ الوقت:</strong> ${b.time}</div>
+                        <div class="mb-2"><strong>📍 العنوان:</strong> ${b.address}</div>
+                        <div class="mb-2"><strong>📝 ملاحظات:</strong> ${b.notes || 'لا توجد'}</div>
+                    `;
+                    
+                    if (b.arrivalVerified) {
+                        html += `<div class="mb-2"><strong>✅ وقت الوصول:</strong> ${new Date(b.arrivalTime).toLocaleString('ar-EG')}</div>`;
+                    }
+                    if (b.beforeImagePath) {
+                        html += `<div class="mb-2"><strong>📸 صورة قبل الخدمة:</strong> <a href="/${b.beforeImagePath}" target="_blank">عرض الصورة</a></div>`;
+                    }
+                    if (b.afterImagePath) {
+                        html += `<div class="mb-2"><strong>📸 صورة بعد الخدمة:</strong> <a href="/${b.afterImagePath}" target="_blank">عرض الصورة</a></div>`;
+                    }
+                    if (b.customerConfirmation) {
+                        html += `<div class="mb-2"><strong>✅ تأكيد العميل:</strong> تم التأكيد في ${new Date(b.completedAt).toLocaleString('ar-EG')}</div>`;
+                    }
+                    
+                    document.getElementById('modalBody').innerHTML = html;
+                    
+                    let actions = '';
+                    if (b.status !== 'completed' && b.status !== 'cancelled') {
+                        actions = `<button class="btn btn-success" onclick="updateStatus('${b._id}', 'completed')"><i class="fas fa-check"></i> إنهاء الحجز</button>
+                                   <button class="btn btn-danger" onclick="updateStatus('${b._id}', 'cancelled')"><i class="fas fa-times"></i> إلغاء الحجز</button>`;
+                    }
+                    document.getElementById('modalActions').innerHTML = actions;
+                    document.getElementById('detailsModal').style.display = 'flex';
+                }
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ', 'error');
+            }
+        }
+
+        async function generateArrivalCode(id) {
+            try {
+                const res = await fetch(`/api/booking/${id}/generate-arrival-code`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    Swal.fire({
+                        title: '✅ كود الوصول',
+                        html: `<div class="code-display"><span>${data.arrivalCode}</span></div><p>يرجى إرسال هذا الكود للعميل ليعطيه للعامل عند الوصول</p>`,
+                        icon: 'success',
+                        confirmButtonText: 'حسناً'
+                    });
+                } else {
+                    Swal.fire('خطأ', data.message, 'error');
+                }
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ', 'error');
+            }
+        }
+
+        async function updateStatus(id, status) {
+            try {
+                const res = await fetch(`/api/admin/bookings/${id}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    Swal.fire('تم التحديث', 'تم تحديث حالة الحجز', 'success');
+                    closeModal();
+                    loadData();
+                } else {
+                    Swal.fire('خطأ', data.message, 'error');
+                }
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ', 'error');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            currentToken = null;
+            location.reload();
+        }
+
+        document.getElementById('filterStatus').addEventListener('change', applyFilters);
+        document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+
+        checkAuth();
+    </script>
+</body>
+</html>

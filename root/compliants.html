@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام الشكاوى</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/compliants.css">
+
+  
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow fixed-top">
+  <div class="container">
+
+    <!-- اسم المشروع -->
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="fas fa-layer-group"></i> HomeEase
+    </a>
+
+    <!-- زر الموبايل -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+
+      <!-- المجموعة اليسرى (الشمال) -->
+      <ul class="navbar-nav">
+        <li class="nav-item ">
+          <a class="nav-link " href="services.html" >
+            الخدمات
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">عن مشروعنا</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="compliants.html">💬 الشكاوى</a>
+        </li>
+      </ul>
+
+      <!-- Spacer بين الشمال واليمين -->
+      <div class="me-auto"></div>
+
+      <!-- المجموعة اليمنى (تسجيل دخول + إنشاء حساب + زر طلب خدمة + Contact) -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html">📞 تواصل معنا</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.html">🔑 تسجيل دخول</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="signup.html">👤 إنشاء حساب</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary ms-2" href="booking.html">📝 طلب خدمة</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+<!-- 🚀 HERO -->
+<section class="hero">
+  <div>
+    <h1 class="glow">نظام الشكاوى والدعم الفني</h1>
+    <p>نحن نعمل على حل جميع المشكلات بسرعة واحترافية عالية</p>
+  </div>
+</section>
+
+<!-- 📌 ABOUT -->
+<section class="text-center">
+  <h2 class="glow">هدفنا</h2>
+  <p>تحسين الخدمة من خلال الاستماع إلى العملاء وحل جميع المشاكل بأسرع وقت</p>
+</section>
+
+<!-- 📊 STEPS -->
+<section>
+  <div class="container">
+    <h2 class="text-center glow mb-5">مراحل معالجة الشكوى</h2>
+
+    <div class="row g-4">
+
+      <div class="col-md-3">
+        <div class="step">1️⃣ استلام الشكوى</div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="step">2️⃣ مراجعة التفاصيل</div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="step">3️⃣ حل المشكلة</div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="step">4️⃣ المتابعة</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 📦 CARDS WITH IMAGES -->
+<section>
+  <div class="container">
+    <h2 class="text-center glow mb-5">مميزات النظام</h2>
+
+    <div class="row g-4">
+
+      <div class="col-md-4">
+        <div class="card-box">
+            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984">
+          <div class="content">
+            <h5>سرعة الرد</h5>
+            <p>نقوم بالرد خلال 24 ساعة فقط</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card-box">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d">
+          <div class="content">
+            <h5>دعم فني احترافي</h5>
+            <p>فريق متخصص لحل جميع المشاكل</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card-box">
+          <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f">
+          <div class="content">
+            <h5>رضا العملاء</h5>
+            <p>نسعى دائماً لتحسين الخدمة</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 🧾 FORM -->
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+
+      <div class="col-md-7">
+        <div class="form-box">
+
+          <h3 class="text-center glow mb-4">تقديم شكوى</h3>
+
+          <input type="text" id="complaintName" placeholder="الاسم الكامل">
+          <input type="email" id="complaintEmail" placeholder="البريد الإلكتروني">
+
+          <select id="complaintType">
+            <option value="">نوع الشكوى</option>
+            <option>مشكلة خدمة</option>
+            <option>تأخير</option>
+            <option>موظف</option>
+            <option>أخرى</option>
+          </select>
+
+          <textarea id="complaintDetails" placeholder="اكتب تفاصيل الشكوى..."></textarea>
+
+          <button type="button" class="btn-send" onclick="sendComplaint()">إرسال الشكوى</button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ❓ FAQ -->
+<section>
+  <div class="container">
+    <h2 class="text-center glow mb-4">الأسئلة الشائعة</h2>
+
+    <div class="faq">❓ كم وقت الرد؟ → خلال 24 ساعة</div>
+    <div class="faq">❓ هل الشكوى سرية؟ → نعم بالكامل</div>
+    <div class="faq">❓ هل يوجد متابعة؟ → قريبًا برقم تتبع</div>
+
+  </div>
+</section>
+
+<!-- 📞 FOOTER -->
+<section class="text-center">
+  <p>© جميع الحقوق محفوظة - الدعم الفني</p>
+</section>
+
+<script>
+function sendComplaint() {
+    // جلب البيانات
+    let name = document.getElementById("complaintName").value;
+    let email = document.getElementById("complaintEmail").value;
+    let type = document.getElementById("complaintType").value;
+    let details = document.getElementById("complaintDetails").value;
+    
+    // التحقق من البيانات
+    if (!name || !email || !type || !details) {
+        alert("❌ من فضلك املأ جميع الحقول");
+        return;
+    }
+    
+    // إرسال للباك إند
+    fetch('/api/complaints', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, type, details })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ تم إرسال الشكوى بنجاح");
+            // تفريغ الحقول
+            document.getElementById("complaintName").value = "";
+            document.getElementById("complaintEmail").value = "";
+            document.getElementById("complaintType").value = "";
+            document.getElementById("complaintDetails").value = "";
+        } else {
+            alert("❌ فشل الإرسال: " + (data.error || data.message));
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("❌ تعذر الاتصال بالسيرفر");
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+.hero {
+  position: relative;
+  height: 90vh;
+}
+
+.heroSwiper,
+.swiper-slide {
+  height: 90vh;
+}
+
+.swiper-slide {
+  background-size: cover;
+  background-position: center;
+}
+
+.swiper {
+  padding-bottom: 10px;
+}
+
+.swiper-slide {
+  height: auto !important;
+}
+
+.card-box {
+  width: 100%;
+}
+
+/* Overlay */
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url(images/WhatsApp\ Image\ 2026-03-22\ at\ 2.30.55\ PM.jpeg);  
+}
+
+/* النص */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  max-width: 600px;
+}
+/* خدمات */
+.services .card {
+  transition: 0.3s;
+  border: 2px solid #0d6efd; 
+  border-radius: 15px; 
+}
+.services .card:hover {
+  transform: translateY(-10px);
+}
+html {
+  scroll-behavior: smooth;
+}
+
+.hover-card {
+  border-radius: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.hover-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+
+
+
+
+
+.testimonials {
+  background: #f4f6f9;
+}
+
+.card-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  height: 100%;
+}
+
+.card-box img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.card-box p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.card-box h6 {
+  color: #0d6efd;
+  font-weight: bold;
+}
+
+
+.testimonials .swiper {
+  padding: 10px 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.carousel-item img {
+            height: 950px;
+            object-fit: cover;
+}
+
+
+
+.carousel-caption h1, .carousel-caption p {
+    color: rgb(4, 7, 16); 
+}
+.carousel-caption p {
+    font-size: x-large ;
+}
+
+.carousel-item{
+    position: relative;
+}
+
+.carousel-item img{
+    height: 90vh;
+    object-fit: cover;
+}
+
+
+.carousel-caption{
+    position: absolute !important;
+
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px 50px;
+    border-radius: 18px;
+
+    width: 80%;
+    max-width: 700px;
+
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    z-index: 2;
+}
+
+
+
+
+
+/* العنوان */
+.carousel-caption h1{
+    color: #fff;
+    font-size: 46px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* البراجراف */
+.carousel-caption p{
+    color: #f1f1f1;
+    font-size: 20px;
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

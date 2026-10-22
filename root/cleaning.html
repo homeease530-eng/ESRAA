@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خدمات التنظيف - في خدمتك</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* ==================== General Styles ==================== */
+    body {
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      overflow-x: hidden;
+      padding-top: 70px;
+    }
+
+    .navbar {
+      background: #1a1a2e !important;
+    }
+
+    /* ==================== Background Animation ==================== */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(102, 126, 234, 0.15);
+      animation: float 10s infinite ease-in-out;
+    }
+
+    .circle:nth-child(1) {
+      width: 350px;
+      height: 350px;
+      top: -100px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .circle:nth-child(2) {
+      width: 500px;
+      height: 500px;
+      bottom: -200px;
+      right: -200px;
+      animation-delay: 3s;
+      background: rgba(118, 75, 162, 0.15);
+    }
+
+    .circle:nth-child(3) {
+      width: 250px;
+      height: 250px;
+      top: 40%;
+      left: 30%;
+      animation-delay: 6s;
+      background: rgba(102, 126, 234, 0.2);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.05); }
+    }
+
+    /* ==================== Sections ==================== */
+    .section {
+      padding: 60px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glow-text {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 40px;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 3px;
+    }
+
+    .text-center h2:after {
+      left: 50%;
+      transform: translateX(-50%);
+      right: auto;
+    }
+
+    /* ==================== Cards ==================== */
+    .card {
+      border: none;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.95);
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .card i {
+      font-size: 3rem;
+      color: #667eea;
+    }
+
+    .card h5 {
+      font-weight: 700;
+      margin: 15px 0;
+      color: #1a1a2e;
+    }
+
+    .card p {
+      color: #666;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      padding: 10px 25px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* ==================== Features ==================== */
+    .feature-box {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .feature-box i {
+      font-size: 2.5rem;
+    }
+
+    .feature-box h5 {
+      color: white;
+      font-weight: 700;
+      margin: 15px 0;
+    }
+
+    /* ==================== Before/After Images ==================== */
+    .before-after-card {
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .before-after-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    .before-after-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    /* ==================== CTA ==================== */
+    .cta-section {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 30px;
+    }
+
+    /* ==================== Responsive ==================== */
+    @media (max-width: 768px) {
+      .glow-text {
+        font-size: 2rem;
+      }
+      
+      h2 {
+        font-size: 1.6rem;
+      }
+      
+      .section {
+        padding: 40px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="fas fa-layer-group"></i> HomeEase
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="services.html">الخدمات</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">عن مشروعنا</a></li>
+        <li class="nav-item"><a class="nav-link" href="compliants.html">💬 الشكاوى</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="contact.html">📞 تواصل معنا</a></li>
+        <li class="nav-item"><a class="nav-link" href="login.html">🔑 تسجيل دخول</a></li>
+        <li class="nav-item"><a class="nav-link" href="signup.html">👤 إنشاء حساب</a></li>
+        <li class="nav-item"><a class="btn btn-primary ms-2" href="booking.html">📝 طلب خدمة</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- الخلفية المتحركة -->
+<div class="background">
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+</div>
+
+<!-- العنوان -->
+<section class="section text-center">
+  <div class="container">
+    <h1 class="glow-text">🧼 خدمات التنظيف</h1>
+    <p class="mt-4 fs-5 text-white">نقدم أفضل خدمات التنظيف بأحدث المعدات وبأعلى جودة</p>
+  </div>
+</section>
+
+<!-- الخدمات -->
+<section class="section">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card p-4 text-center">
+          <i class="fas fa-home"></i>
+          <h5>تنظيف المنازل</h5>
+          <p>تنظيف شامل لكل أجزاء المنزل بدقة واحترافية.</p>
+          <a href="booking.html" class="btn btn-primary">احجز الآن</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 text-center">
+          <i class="fas fa-building"></i>
+          <h5>تنظيف الشركات</h5>
+          <p>نحافظ على بيئة عمل نظيفة ومنظمة دائمًا.</p>
+          <a href="booking.html" class="btn btn-primary">احجز الآن</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 text-center">
+          <i class="fas fa-broom"></i>
+          <h5>تنظيف عميق</h5>
+          <p>تنظيف دقيق لكل الأماكن والزوايا الصعبة.</p>
+          <a href="booking.html" class="btn btn-primary">احجز الآن</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 text-center">
+          <i class="fas fa-hard-hat"></i>
+          <h5>تنظيف بعد التشطيب</h5>
+          <p>إزالة الأتربة وبقايا البناء بالكامل.</p>
+          <a href="booking.html" class="btn btn-primary">احجز الآن</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 text-center">
+          <i class="fas fa-couch"></i>
+          <h5>تنظيف السجاد</h5>
+          <p>تنظيف وتعقيم السجاد والمفروشات بأمان.</p>
+          <a href="booking.html" class="btn btn-primary">احجز الآن</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 text-center">
+          <i class="fas fa-window-maximize"></i>
+          <h5>تنظيف الواجهات والزجاج</h5>
+          <p>تنظيف احترافي للنوافذ والواجهات الزجاجية.</p>
+          <a href="booking.html" class="btn btn-primary">احجز الآن</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- المميزات -->
+<section class="section text-center">
+  <div class="container">
+    <h2>لماذا تختارنا؟</h2>
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="zoom-in">
+        <div class="feature-box p-4">
+          <i class="fas fa-star text-warning"></i>
+          <h5>جودة عالية</h5>
+          <p class="text-white-50">نقدم أفضل مستوى من الخدمة.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="feature-box p-4">
+          <i class="fas fa-bolt text-warning"></i>
+          <h5>سرعة التنفيذ</h5>
+          <p class="text-white-50">نلتزم بالمواعيد بدقة.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="feature-box p-4">
+          <i class="fas fa-tools text-warning"></i>
+          <h5>معدات حديثة</h5>
+          <p class="text-white-50">نستخدم أحدث الأدوات.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- قبل وبعد - صور معبرة لكل خدمة -->
+<section class="section text-center">
+  <div class="container">
+    <h2>✨ شاهد الفرق قبل وبعد ✨</h2>
+    <div class="row g-4">
+      
+      <!-- كارد 1 - تنظيف المنازل -->
+      <div class="col-md-4">
+        <div class="before-after-card card p-3 h-100">
+          <img src="https://images.pexels.com/photos/4107305/pexels-photo-4107305.jpeg?auto=compress&cs=tinysrgb&w=800" 
+               class="img-fluid rounded" 
+               alt="تنظيف منزل" 
+               style="height: 220px; object-fit: cover;">
+          <h5 class="mt-3">🧼 تنظيف المنازل</h5>
+          <div class="text-warning mb-2">⭐⭐⭐⭐⭐</div>
+          <p class="text-muted">منزل نظيف ومرتب بأعلى جودة</p>
+          <a href="booking.html" class="btn btn-primary btn-sm mt-2">احجز الخدمة</a>
+        </div>
+      </div>
+
+      <!-- كارد 2 - تنظيف السجاد -->
+      <div class="col-md-4">
+        <div class="before-after-card card p-3 h-100">
+          <img src="https://images.pexels.com/photos/4107283/pexels-photo-4107283.jpeg?auto=compress&cs=tinysrgb&w=800"
+               class="img-fluid rounded" 
+               alt="تنظيف سجاد" 
+               style="height: 220px; object-fit: cover;">
+          <h5 class="mt-3">🧹 تنظيف السجاد</h5>
+          <div class="text-warning mb-2">⭐⭐⭐⭐⭐</div>
+          <p class="text-muted">سجاد نظيف ومعطر وخالي من البقع</p>
+          <a href="booking.html" class="btn btn-primary btn-sm mt-2">احجز الخدمة</a>
+        </div>
+      </div>
+
+      <!-- كارد 3 - تنظيف المطابخ -->
+      <div class="col-md-4">
+        <div class="before-after-card card p-3 h-100">
+          <img src="https://images.pexels.com/photos/4107300/pexels-photo-4107300.jpeg?auto=compress&cs=tinysrgb&w=800" 
+               class="img-fluid rounded" 
+               alt="تنظيف مطبخ" 
+               style="height: 220px; object-fit: cover;">
+          <h5 class="mt-3">🍽️ تنظيف المطابخ</h5>
+          <div class="text-warning mb-2">⭐⭐⭐⭐⭐</div>
+          <p class="text-muted">مطبخ لامع ومعقم خالي من الدهون</p>
+          <a href="booking.html" class="btn btn-primary btn-sm mt-2">احجز الخدمة</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- استفسار آخر -->
+<section class="section text-center">
+  <div class="container cta-section py-5">
+    <h2 class="text-white">📞 هل من استفسار آخر؟</h2>
+    <p class="mb-4 text-white-50">إذا كان لديك أي سؤال أو استفسار، لا تتردد في التواصل معنا.</p>
+    <a href="contact.html" class="btn btn-light btn-lg">
+      <i class="fas fa-envelope me-2"></i>تواصل معنا الآن
+    </a>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+</script>
+</body>
+</html>

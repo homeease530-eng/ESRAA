@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خدمات الاشتراك والباكات الاحترافية</title>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+  direction: rtl;
+  background: linear-gradient(135deg, #d4f0f0, #ffffff, #b3e5fc);
+  overflow-x: hidden;
+  color: #333;
+  padding-top: 70px;
+}
+
+.navbar {
+  background: #1a1a2e !important;
+}
+
+.section {
+  padding: 80px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+h2, h3 {
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+}
+
+h2 { margin-bottom: 50px; }
+
+.card {
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+}
+
+.card-header {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #2575fc;
+}
+
+.card-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6a11cb;
+  margin: 15px 0;
+}
+
+.card ul { list-style: none; padding: 0; }
+.card ul li { margin: 10px 0; }
+
+.btn-custom {
+  background: #6a11cb;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+  background: #2575fc;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.bg-highlight {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  border-radius: 15px;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  margin-bottom: 60px;
+}
+
+ul.highlight-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+ul.highlight-list li {
+  margin: 10px 0;
+}
+
+.badge-featured {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4d4d;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="fas fa-layer-group"></i> في خدمتك
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="services.html">الخدمات</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">عن مشروعنا</a></li>
+        <li class="nav-item"><a class="nav-link" href="compliants.html">💬 الشكاوى</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="contact.html">📞 تواصل معنا</a></li>
+        <li class="nav-item"><a class="nav-link" href="login.html">🔑 تسجيل دخول</a></li>
+        <li class="nav-item"><a class="nav-link" href="signup.html">👤 إنشاء حساب</a></li>
+        <li class="nav-item"><a class="btn btn-primary ms-2" href="booking.html">📝 طلب خدمة</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="container text-center mt-4 mb-4">
+  <h1 class="display-4 fw-bold">💎 اشترك الآن ووفر أكثر</h1>
+  <p class="fs-4">اختر الباقة المناسبة لك واستمتع بخصومات حصرية</p>
+</div>
+
+<!-- الباقات المميزة -->
+<div class="section container animate__animated animate__fadeIn">
+  <h2>الباقات المميزة</h2>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card p-4 text-center featured">
+        <div class="badge-featured">الأكثر طلباً</div>
+        <div class="card-header">🥇 الباقة الذهبية</div>
+        <div class="card-price">500 جنيه/شهر</div>
+        <ul>
+          <li><i class="fas fa-check-circle text-success"></i> خدمات كاملة مع أولوية الحجز</li>
+          <li><i class="fas fa-check-circle text-success"></i> متابعة يومية ومستمرة</li>
+          <li><i class="fas fa-check-circle text-success"></i> خدمة عاجلة مجانية</li>
+        </ul>
+        <button id="subscribeGold" class="btn btn-custom w-100 mt-3">اشترك الآن</button>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 text-center">
+        <div class="card-header">🥈 الباقة الفضية</div>
+        <div class="card-price">300 جنيه/شهر</div>
+        <ul>
+          <li><i class="fas fa-check-circle text-success"></i> خدمات أساسية بأسعار مناسبة</li>
+          <li><i class="fas fa-check-circle text-success"></i> دعم عبر الهاتف</li>
+          <li><i class="fas fa-check-circle text-success"></i> متابعة أسبوعية</li>
+        </ul>
+        <button id="subscribeSilver" class="btn btn-custom w-100 mt-3">اشترك الآن</button>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 text-center">
+        <div class="card-header">🥉 الباقة البرونزية</div>
+        <div class="card-price">150 جنيه/شهر</div>
+        <ul>
+          <li><i class="fas fa-check-circle text-success"></i> خدمات محدودة للمبتدئين</li>
+          <li><i class="fas fa-check-circle text-success"></i> دعم عبر البريد الإلكتروني</li>
+          <li><i class="fas fa-check-circle text-success"></i> متابعة شهرية</li>
+        </ul>
+        <button id="subscribeBronze" class="btn btn-custom w-100 mt-3">اشترك الآن</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- خصومات على الباقات السنوية -->
+<div class="section animate__animated animate__fadeIn">
+  <div class="bg-highlight">
+    <h3>🎁 خصومات على الباقات السنوية</h3>
+    <p>اشترك لمدة 12 شهر واحصل على خصم 15% على السعر الكلي!</p>
+    <ul class="highlight-list">
+      <li>✔ الباقة الذهبية السنوية - 5100 جنيه بدلاً من 6000</li>
+      <li>✔ الباقة الفضية السنوية - 3060 جنيه بدلاً من 3600</li>
+      <li>✔ الباقة البرونزية السنوية - 1530 جنيه بدلاً من 1800</li>
+    </ul>
+    <button id="annualDiscountBtn" class="btn btn-light mt-3">احصل على الخصم الآن</button>
+  </div>
+</div>
+
+<!-- خصومات كبار السن -->
+<div class="section animate__animated animate__fadeIn">
+  <div class="bg-highlight" style="background: linear-gradient(135deg, #11998e, #38ef7d);">
+    <h3>👴 خصومات كبار السن</h3>
+    <p>خصم 20% على جميع الباقات لكبار السن فوق 60 سنة</p>
+    <button id="seniorsDiscountBtn" class="btn btn-light mt-3">احصل على الخصم</button>
+  </div>
+</div>
+
+<!-- خدمات ذوي الاحتياجات الخاصة -->
+<div class="section animate__animated animate__fadeIn">
+  <h2>🤝 خدمات ذوي الاحتياجات الخاصة</h2>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card p-4 text-center">
+        <div class="card-header">🏠 رعاية منزلية خاصة</div>
+        <p>توفير موظفين مدربين للتعامل مع الحالات الخاصة مع خصم 30%</p>
+        <div class="card-price">حسب نوع الخدمة</div>
+        <button id="specialBookingBtn" class="btn btn-custom w-100 mt-3">احجز الآن</button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4 text-center">
+        <div class="card-header">🤝 دعم إضافي</div>
+        <p>متابعة يومية ومساعدة مستمرة عند الحاجة مع خصم 30%</p>
+        <div class="card-price">حسب نوع الخدمة</div>
+        <button id="extraSupportBtn" class="btn btn-custom w-100 mt-3">احجز الآن</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- الخدمات المدفوعة -->
+<div class="section bg-light animate__animated animate__fadeIn">
+  <h2>⚡ الخدمات المدفوعة</h2>
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4 text-center">
+        <div class="card-header">🚀 خدمة عاجلة</div>
+        <p>خدمة أسرع مقابل رسوم إضافية</p>
+        <div class="card-price">+50 جنيه لكل طلب</div>
+        <button id="urgentServiceBtn" class="btn btn-custom w-100 mt-3">اشترِ الآن</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- نموذج الدفع -->
+<div class="section container animate__animated animate__fadeIn" id="payment-section">
+  <h2>💳 إتمام الدفع</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4">
+        <div class="card-header text-center mb-4">بيانات الدفع</div>
+        <form id="paymentForm">
+          <div class="mb-3">
+            <label for="cardName" class="form-label">اسم صاحب البطاقة</label>
+            <input type="text" class="form-control" id="cardName" placeholder="أدخل الاسم على البطاقة" required>
+          </div>
+          <div class="mb-3">
+            <label for="cardNumber" class="form-label">رقم البطاقة</label>
+            <input type="text" class="form-control" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" required>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="expiry" class="form-label">تاريخ الانتهاء</label>
+              <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+            </div>
+            <div class="col">
+              <label for="cvv" class="form-label">CVV</label>
+              <input type="text" class="form-control" id="cvv" placeholder="XXX" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="packageSelect" class="form-label">اختر الباقة</label>
+            <select class="form-select" id="packageSelect" required>
+              <option value="" disabled selected>اختر الباقة</option>
+              <option value="gold">🥇 الباقة الذهبية - 500 جنيه/شهر</option>
+              <option value="silver">🥈 الباقة الفضية - 300 جنيه/شهر</option>
+              <option value="bronze">🥉 الباقة البرونزية - 150 جنيه/شهر</option>
+              <option value="fullGold">💎 الباقة الذهبية السنوية - خصم 15%</option>
+              <option value="fullSilver">💎 الباقة الفضية السنوية - خصم 15%</option>
+              <option value="fullBronze">💎 الباقة البرونزية السنوية - خصم 15%</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-custom w-100 mt-3">💳 دفع الآن</button>
+        </form>
+        <div id="paymentResult" class="mt-3 text-center"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-light pt-5 pb-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <h5><i class="fas fa-layer-group me-2"></i>في خدمتك</h5>
+        <p class="text-muted">نقدم أفضل الخدمات المنزلية بجودة عالية وأسعار منافسة</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>روابط سريعة</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="text-light text-decoration-none">الرئيسية</a></li>
+          <li><a href="services.html" class="text-light text-decoration-none">الخدمات</a></li>
+          <li><a href="booking.html" class="text-light text-decoration-none">احجز الآن</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>تابعنا</h5>
+        <a href="#" class="text-light me-3 fs-4"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="text-light me-3 fs-4"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-light me-3 fs-4"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+    <hr class="bg-secondary">
+    <div class="text-center mt-3">
+      <p class="mb-0">&copy; 2026 في خدمتك. جميع الحقوق محفوظة.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- مكتبات -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const userId = localStorage.getItem('userId');
+
+    // أزرار الباقات
+    const goldBtn = document.getElementById('subscribeGold');
+    const silverBtn = document.getElementById('subscribeSilver');
+    const bronzeBtn = document.getElementById('subscribeBronze');
+
+    if (goldBtn) {
+        goldBtn.addEventListener('click', () => selectPackage('gold', 500, 'شهري'));
+    }
+    if (silverBtn) {
+        silverBtn.addEventListener('click', () => selectPackage('silver', 300, 'شهري'));
+    }
+    if (bronzeBtn) {
+        bronzeBtn.addEventListener('click', () => selectPackage('bronze', 150, 'شهري'));
+    }
+
+    // خصم السنوي
+    const annualBtn = document.getElementById('annualDiscountBtn');
+    if (annualBtn) {
+        annualBtn.addEventListener('click', () => {
+            alert("الخصم السنوي 15% سيُطبق تلقائياً عند اختيار باقة سنوية من نموذج الدفع");
+            document.getElementById('payment-section').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    // خصم كبار السن
+    const seniorsBtn = document.getElementById('seniorsDiscountBtn');
+    if (seniorsBtn) {
+        seniorsBtn.addEventListener('click', () => {
+            alert("خصم 20% سيُطبق تلقائياً عند الحجز لكبار السن فوق 60 سنة");
+            window.location.href = 'booking.html';
+        });
+    }
+
+    // خدمات خاصة
+    const specialBtn = document.getElementById('specialBookingBtn');
+    if (specialBtn) {
+        specialBtn.addEventListener('click', () => {
+            window.location.href = 'special.html';
+        });
+    }
+
+    const extraSupportBtn = document.getElementById('extraSupportBtn');
+    if (extraSupportBtn) {
+        extraSupportBtn.addEventListener('click', () => {
+            window.location.href = 'special.html';
+        });
+    }
+
+    // خدمة عاجلة
+    const urgentBtn = document.getElementById('urgentServiceBtn');
+    if (urgentBtn) {
+        urgentBtn.addEventListener('click', () => {
+            alert("خدمة عاجلة +50 جنيه سيتم إضافتها عند تأكيد الحجز");
+            window.location.href = 'booking.html';
+        });
+    }
+
+    // فورم الدفع
+    const paymentForm = document.getElementById('paymentForm');
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('cardName').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiry = document.getElementById('expiry').value;
+            const cvv = document.getElementById('cvv').value;
+            const packageSelected = document.getElementById('packageSelect').value;
+
+            if (!name || !cardNumber || !expiry || !cvv || !packageSelected) {
+                document.getElementById('paymentResult').innerHTML = 
+                    '<div class="text-danger">❌ يرجى ملء جميع الحقول</div>';
+                return;
+            }
+
+            let amount = 0;
+            let duration = 'monthly';
+            let packageName = '';
+            
+            if(packageSelected === 'gold') { amount = 500; packageName = 'gold'; }
+            else if(packageSelected === 'silver') { amount = 300; packageName = 'silver'; }
+            else if(packageSelected === 'bronze') { amount = 150; packageName = 'bronze'; }
+            else if(packageSelected === 'fullGold') { amount = 5100; duration = 'annual'; packageName = 'gold'; }
+            else if(packageSelected === 'fullSilver') { amount = 3060; duration = 'annual'; packageName = 'silver'; }
+            else if(packageSelected === 'fullBronze') { amount = 1530; duration = 'annual'; packageName = 'bronze'; }
+
+            document.getElementById('paymentResult').innerHTML = 
+                '<div class="text-info">⏳ جاري معالجة الدفع...</div>';
+
+            try {
+                const response = await fetch('/api/subscriptions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId || null,
+                        packageName: packageName,
+                        amount: amount,
+                        duration: duration
+                    })
+                });
+                const data = await response.json();
+                
+                if(data.success) {
+                    document.getElementById('paymentResult').innerHTML = 
+                        `<div class="alert alert-success">✅ تم الاشتراك بنجاح!<br>
+                         🏷️ الباقة: ${packageSelected}<br>
+                         💰 المبلغ: ${amount} جنيه<br>
+                         📅 المدة: ${duration === 'monthly' ? 'شهري' : 'سنوي'}<br>
+                         🙏 شكراً، ${name}</div>`;
+                    document.getElementById('paymentForm').reset();
+                } else {
+                    document.getElementById('paymentResult').innerHTML = 
+                        `<div class="alert alert-danger">❌ فشل الاشتراك: ${data.error}</div>`;
+                }
+            } catch(error) {
+                console.error('Error:', error);
+                document.getElementById('paymentResult').innerHTML = 
+                    '<div class="alert alert-danger">❌ تعذر الاتصال بالسيرفر</div>';
+            }
+        });
+    }
+});
+
+function selectPackage(packageName, price, duration) {
+    const select = document.getElementById('packageSelect');
+    if (packageName === 'gold') select.value = 'gold';
+    else if (packageName === 'silver') select.value = 'silver';
+    else if (packageName === 'bronze') select.value = 'bronze';
+    
+    document.getElementById('payment-section').scrollIntoView({ behavior: 'smooth' });
+    alert(`✅ تم اختيار ${duration === 'شهري' ? 'الباقة الشهرية' : 'العرض'} بقيمة ${price} جنيه\nيرجى إكمال بيانات الدفع`);
+}
+</script>
+</body>
+</html>

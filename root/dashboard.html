@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - في خدمتك</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Cairo', sans-serif;
+            padding-top: 80px;
+        }
+        .navbar {
+            background: #1a1a2e !important;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .badge-pending { background: #ffc107; color: #000; }
+        .badge-approved { background: #28a745; color: #fff; }
+        .badge-rejected { background: #dc3545; color: #fff; }
+        .filter-btn {
+            margin: 5px;
+            border-radius: 25px;
+            padding: 8px 20px;
+        }
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .booking-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .booking-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow fixed-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="fas fa-layer-group"></i> HomeEase
+    </a>
+    <div class="ms-auto">
+      <span id="userName" class="text-white me-3">مرحباً</span>
+      <button class="btn btn-danger btn-sm" onclick="logout()">تسجيل خروج</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card text-center">
+                <h2>🏠 لوحة التحكم</h2>
+                <p>مرحباً بك، يمكنك متابعة جميع طلباتك من هنا</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- إحصائيات -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-broom fa-2x text-primary"></i>
+                <div class="stat-number" id="cleaningCount">0</div>
+                <h6>طلبات التنظيف</h6>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-tools fa-2x text-primary"></i>
+                <div class="stat-number" id="maintenanceCount">0</div>
+                <h6>طلبات الصيانة</h6>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-stethoscope fa-2x text-primary"></i>
+                <div class="stat-number" id="medicalCount">0</div>
+                <h6>طلبات الرعاية الطبية</h6>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-wheelchair fa-2x text-primary"></i>
+                <div class="stat-number" id="specialCount">0</div>
+                <h6>طلبات الدعم الخاص</h6>
+            </div>
+        </div>
+    </div>
+
+    <!-- زر الفلترة -->
+    <div class="dashboard-card text-center">
+        <h5>فلترة الحجوزات</h5>
+        <div class="btn-group flex-wrap" role="group">
+            <button class="btn btn-outline-primary filter-btn active" data-filter="all">📋 الكل</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="cleaning">🧹 تنظيف</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="maintenance">🔧 صيانة</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="medical">🏥 رعاية طبية</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="special">🤝 دعم خاص</button>
+        </div>
+    </div>
+
+    <!-- قائمة الحجوزات -->
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <div class="card-header-custom" onclick="toggleSection('bookingsSection')">
+                    <h4 class="mb-0"><i class="fas fa-calendar-check"></i> حجوزاتي</h4>
+                </div>
+                <div id="bookingsSection">
+                    <div id="bookingsList" class="loading">
+                        <div class="spinner"></div>
+                        <p>جاري تحميل الحجوزات...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسائل التواصل -->
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <div class="card-header-custom" onclick="toggleSection('contactsSection')">
+                    <h4 class="mb-0"><i class="fas fa-envelope"></i> رسائلي</h4>
+                </div>
+                <div id="contactsSection" style="display: none;">
+                    <div id="contactsList" class="loading">
+                        <div class="spinner"></div>
+                        <p>جاري تحميل الرسائل...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الشكاوى -->
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <div class="card-header-custom" onclick="toggleSection('complaintsSection')">
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle"></i> شكواي</h4>
+                </div>
+                <div id="complaintsSection" style="display: none;">
+                    <div id="complaintsList" class="loading">
+                        <div class="spinner"></div>
+                        <p>جاري تحميل الشكاوى...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- اشتراكات -->
+    <div class="row">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <div class="card-header-custom" onclick="toggleSection('subscriptionsSection')">
+                    <h4 class="mb-0"><i class="fas fa-trophy"></i> اشتراكاتي</h4>
+                </div>
+                <div id="subscriptionsSection" style="display: none;">
+                    <div id="subscriptionsList" class="loading">
+                        <div class="spinner"></div>
+                        <p>جاري تحميل الاشتراكات...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let userId = localStorage.getItem('userId');
+    let token = localStorage.getItem('token');
+    let currentFilter = 'all';
+    let allBookings = [];
+
+    if (!userId) {
+        window.location.href = 'login.html';
+    }
+
+    const userName = localStorage.getItem('userName');
+    if (userName) document.getElementById('userName').innerHTML = `مرحباً ${userName}`;
+
+    function logout() {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    }
+
+    function toggleSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section.style.display === 'none') {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+        }
+    }
+
+    async function fetchAllData() {
+        await fetchBookings();
+        await fetchContacts();
+        await fetchComplaints();
+        await fetchSubscriptions();
+    }
+
+    async function fetchBookings() {
+        try {
+            const response = await fetch(`/api/bookings/${userId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            
+            if (data.success && data.bookings) {
+                allBookings = data.bookings;
+                updateStats();
+                displayBookings();
+            } else {
+                document.getElementById('bookingsList').innerHTML = '<div class="text-muted text-center">لا توجد حجوزات</div>';
+            }
+        } catch (error) {
+            console.error('Error fetching bookings:', error);
+            document.getElementById('bookingsList').innerHTML = '<div class="text-danger text-center">خطأ في تحميل الحجوزات</div>';
+        }
+    }
+
+    function updateStats() {
+        let cleaning = 0, maintenance = 0, medical = 0, special = 0;
+        
+        allBookings.forEach(booking => {
+            const service = booking.serviceName?.toLowerCase() || '';
+            if (service === 'cleaning' || service.includes('تنظيف')) cleaning++;
+            else if (service === 'maintenance' || service.includes('صيانة')) maintenance++;
+            else if (service === 'medical-care' || service === 'medical' || service.includes('طبية')) medical++;
+            else if (service === 'special-needs' || service === 'special' || service.includes('خاص')) special++;
+        });
+        
+        document.getElementById('cleaningCount').innerHTML = cleaning;
+        document.getElementById('maintenanceCount').innerHTML = maintenance;
+        document.getElementById('medicalCount').innerHTML = medical;
+        document.getElementById('specialCount').innerHTML = special;
+    }
+
+    function displayBookings() {
+        const container = document.getElementById('bookingsList');
+        let filteredBookings = allBookings;
+        
+        if (currentFilter !== 'all') {
+            filteredBookings = allBookings.filter(booking => {
+                const service = booking.serviceName?.toLowerCase() || '';
+                if (currentFilter === 'cleaning') return service === 'cleaning' || service.includes('تنظيف');
+                if (currentFilter === 'maintenance') return service === 'maintenance' || service.includes('صيانة');
+                if (currentFilter === 'medical') return service === 'medical-care' || service === 'medical' || service.includes('طبية');
+                if (currentFilter === 'special') return service === 'special-needs' || service === 'special' || service.includes('خاص');
+                return false;
+            });
+        }
+        
+        if (filteredBookings.length === 0) {
+            container.innerHTML = '<div class="text-muted text-center">لا توجد حجوزات في هذه الفئة</div>';
+            return;
+        }
+        
+        container.innerHTML = filteredBookings.map(booking => `
+            <div class="booking-item">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <strong>${booking.serviceName || booking.subService || 'خدمة'}</strong>
+                        <br>
+                        <small>📅 ${booking.date || 'غير محدد'} - ⏰ ${booking.time || 'غير محدد'}</small>
+                        <br>
+                        <small>📍 ${booking.address || 'العنوان غير محدد'}</small>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge ${booking.status === 'pending' ? 'badge-pending' : booking.status === 'approved' ? 'badge-approved' : 'badge-rejected'}">
+                            ${booking.status === 'pending' ? 'قيد المراجعة' : booking.status === 'approved' ? 'تم الموافقة' : 'مرفوض'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function fetchContacts() {
+        try {
+            const response = await fetch('/api/contacts', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            const container = document.getElementById('contactsList');
+            
+            if (data.success && data.contacts && data.contacts.length > 0) {
+                container.innerHTML = data.contacts.map(c => `
+                    <div class="booking-item">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div>
+                                <strong>${c.service}</strong>
+                                <br>
+                                <small>${c.message.substring(0, 100)}${c.message.length > 100 ? '...' : ''}</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge ${c.status === 'pending' ? 'badge-pending' : 'badge-approved'}">
+                                    ${c.status === 'pending' ? 'قيد المراجعة' : 'تم الرد'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div class="text-muted text-center">لا توجد رسائل</div>';
+            }
+        } catch (error) {
+            document.getElementById('contactsList').innerHTML = '<div class="text-danger text-center">خطأ في تحميل الرسائل</div>';
+        }
+    }
+
+    async function fetchComplaints() {
+        try {
+            const response = await fetch('/api/complaints', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            const container = document.getElementById('complaintsList');
+            
+            if (data.success && data.complaints && data.complaints.length > 0) {
+                container.innerHTML = data.complaints.map(c => `
+                    <div class="booking-item">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div>
+                                <strong>${c.type}</strong>
+                                <br>
+                                <small>${c.details.substring(0, 100)}${c.details.length > 100 ? '...' : ''}</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge ${c.status === 'pending' ? 'badge-pending' : 'badge-approved'}">
+                                    ${c.status === 'pending' ? 'قيد المراجعة' : 'تم الحل'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div class="text-muted text-center">لا توجد شكاوى</div>';
+            }
+        } catch (error) {
+            document.getElementById('complaintsList').innerHTML = '<div class="text-danger text-center">خطأ في تحميل الشكاوى</div>';
+        }
+    }
+
+    async function fetchSubscriptions() {
+        try {
+            const response = await fetch(`/api/subscriptions/${userId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            const container = document.getElementById('subscriptionsList');
+            
+            if (data.success && data.subscriptions && data.subscriptions.length > 0) {
+                container.innerHTML = data.subscriptions.map(s => `
+                    <div class="booking-item">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div>
+                                <strong>${s.packageType === 'gold' ? '🥇 الباقة الذهبية' : s.packageType === 'silver' ? '🥈 الباقة الفضية' : '🥉 الباقة البرونزية'}</strong>
+                                <br>
+                                <small>${s.packageDuration === 'monthly' ? 'شهري' : 'سنوي'} - ${s.price} جنيه</small>
+                                <br>
+                                <small>تاريخ الاشتراك: ${new Date(s.startDate).toLocaleDateString('ar-EG')}</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge badge-approved">نشط</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div class="text-muted text-center">لا توجد اشتراكات</div>';
+            }
+        } catch (error) {
+            document.getElementById('subscriptionsList').innerHTML = '<div class="text-danger text-center">خطأ في تحميل الاشتراكات</div>';
+        }
+    }
+
+    // أحداث الفلترة
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.getAttribute('data-filter');
+            displayBookings();
+        });
+    });
+
+    fetchAllData();
+</script>
+</body>
+</html>

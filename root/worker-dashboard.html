@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم العامل - منصة الخدمات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Login Card */
+        .login-card {
+            max-width: 450px;
+            margin: 80px auto;
+            background: white;
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .login-icon i {
+            font-size: 40px;
+            color: white;
+        }
+        .login-card h2 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        .login-card .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        /* Dashboard Header */
+        .dashboard-header {
+            background: white;
+            border-radius: 24px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .worker-info h2 {
+            color: #1e293b;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .worker-info p {
+            color: #64748b;
+            margin: 0;
+        }
+        .worker-status {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .status-available { background: #d1fae5; color: #059669; }
+        .status-busy { background: #fee2e2; color: #dc2626; }
+        .status-vacation { background: #fef3c7; color: #d97706; }
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-card.pending h3 { color: #f59e0b; }
+        .stat-card.completed h3 { color: #10b981; }
+        .stat-card.total h3 { color: #3b82f6; }
+        .stat-card p {
+            color: #64748b;
+            margin: 0;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .section-title i {
+            font-size: 24px;
+            color: #10b981;
+        }
+        .section-title h4 {
+            color: white;
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        /* Booking Cards */
+        .booking-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .booking-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+        .customer-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .booking-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-assigned { background: #fef3c7; color: #d97706; }
+        .status-completed { background: #d1fae5; color: #059669; }
+        
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #475569;
+            font-size: 14px;
+        }
+        .detail-item i {
+            width: 20px;
+            color: #10b981;
+        }
+        
+        /* Verification Sections */
+        .verification-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .verification-title {
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .code-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .code-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .btn-primary-custom {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary-custom:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        .btn-secondary-custom {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+        .completion-code {
+            background: #fef3c7;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .completion-code span {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            color: #d97706;
+        }
+        .upload-area {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .image-preview {
+            margin-top: 10px;
+        }
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            color: #64748b;
+        }
+        .optional-badge {
+            background: #e2e8f0;
+            color: #64748b;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="loginSection" class="login-card">
+            <div class="login-icon">
+                <i class="fas fa-hard-hat"></i>
+            </div>
+            <h2>مرحباً بك</h2>
+            <p class="subtitle">تسجيل دخول العاملين</p>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        <input type="tel" class="form-control form-control-lg" id="workerPhone" 
+                               placeholder="رقم الهاتف" style="text-align: right;" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+            </form>
+            <div id="loginError" class="text-danger text-center mt-3"></div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" style="display: none;">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <div class="worker-info">
+                    <h2><i class="fas fa-user-check"></i> مرحباً، <span id="workerName">-</span></h2>
+                    <p><span id="workerJob"></span> · <span id="workerPhoneDisplay"></span></p>
+                </div>
+                <div>
+                    <span class="worker-status" id="workerStatusBadge">🟢 متاح</span>
+                    <button class="logout-btn ms-2" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> خروج
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card pending">
+                    <h3 id="statPending">0</h3>
+                    <p><i class="fas fa-spinner fa-pulse"></i> خدمات قيد التنفيذ</p>
+                </div>
+                <div class="stat-card completed">
+                    <h3 id="statCompleted">0</h3>
+                    <p><i class="fas fa-check-circle"></i> خدمات منتهية</p>
+                </div>
+                <div class="stat-card total">
+                    <h3 id="statTotal">0</h3>
+                    <p><i class="fas fa-chart-line"></i> إجمالي الخدمات</p>
+                </div>
+            </div>
+
+            <!-- Active Services -->
+            <div class="section-title">
+                <i class="fas fa-tasks"></i>
+                <h4>الخدمات الحالية</h4>
+            </div>
+            <div id="activeBookingsContainer"></div>
+
+            <!-- Completed Services -->
+            <div class="section-title mt-4">
+                <i class="fas fa-history"></i>
+                <h4>الخدمات المنتهية</h4>
+            </div>
+            <div id="completedBookingsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = localStorage.getItem('workerToken');
+        let currentWorker = null;
+        let currentBookings = [];
+
+        // ========== Helper Functions ==========
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('ar-EG');
+        }
+
+        // ========== Auth Functions ==========
+        function checkAuth() {
+            if (currentToken) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('dashboardSection').style.display = 'block';
+                fetchAllData();
+            } else {
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('dashboardSection').style.display = 'none';
+            }
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const phone = document.getElementById('workerPhone').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (!phone) {
+                errorDiv.textContent = '❌ يرجى إدخال رقم الهاتف';
+                return;
+            }
+            
+            errorDiv.textContent = '⏳ جاري تسجيل الدخول...';
+            
+            try {
+                const response = await fetch('/api/worker/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentToken = data.token;
+                    currentWorker = data.worker;
+                    localStorage.setItem('workerToken', currentToken);
+                    localStorage.setItem('workerData', JSON.stringify(currentWorker));
+                    errorDiv.textContent = '';
+                    checkAuth();
+                } else {
+                    errorDiv.textContent = '❌ ' + (data.message || 'رقم الهاتف غير موجود');
+                }
+            } catch (err) {
+                errorDiv.textContent = '❌ خطأ في الاتصال بالسيرفر';
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('workerToken');
+            localStorage.removeItem('workerData');
+            currentToken = null;
+            currentWorker = null;
+            checkAuth();
+        }
+
+        // Load saved worker data
+        const savedWorker = localStorage.getItem('workerData');
+        if (savedWorker) {
+            currentWorker = JSON.parse(savedWorker);
+            if (currentWorker) {
+                document.getElementById('workerName').innerText = currentWorker.name;
+                document.getElementById('workerJob').innerText = currentWorker.job;
+                document.getElementById('workerPhoneDisplay').innerText = currentWorker.phone;
+            }
+        }
+
+        // ========== Fetch Data ==========
+        async function fetchAllData() {
+            await Promise.all([
+                fetchBookings(),
+                fetchStats()
+            ]);
+        }
+
+        async function fetchBookings() {
+            try {
+                const response = await fetch('/api/worker/bookings', {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentBookings = data.activeBookings;
+                    displayActiveBookings(data.activeBookings);
+                    displayCompletedBookings(data.completedBookings);
+                    updateWorkerStatusBadge();
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire('خطأ', 'حدث خطأ في تحميل البيانات', 'error');
+            }
+        }
+
+        async function fetchStats() {
+            try {
+                const response = await fetch('/api/worker/stats', {
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('statPending').innerText = data.stats.pending;
+                    document.getElementById('statCompleted').innerText = data.stats.completed;
+                    document.getElementById('statTotal').innerText = data.stats.total;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function updateWorkerStatusBadge() {
+            if (!currentWorker) return;
+            const badge = document.getElementById('workerStatusBadge');
+            if (currentWorker.status === 'available') {
+                badge.innerHTML = '🟢 متاح';
+                badge.className = 'worker-status status-available';
+            } else if (currentWorker.status === 'busy') {
+                badge.innerHTML = '🔴 مشغول';
+                badge.className = 'worker-status status-busy';
+            } else {
+                badge.innerHTML = '🟡 إجازة';
+                badge.className = 'worker-status status-vacation';
+            }
+        }
+
+        // ========== Display Functions ==========
+        function displayActiveBookings(bookings) {
+            const container = document.getElementById('activeBookingsContainer');
+            if (!bookings || bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle fa-3x mb-3" style="color: #10b981;"></i>
+                        <p>لا توجد خدمات حالية</p>
+                        <p class="small">أنت متاح لاستقبال طلبات جديدة</p>
+                    </div>`;
+                return;
+            }
+            
+            let html = '';
+            bookings.forEach(booking => {
+                const isArrivalVerified = booking.arrivalVerified || false;
+                const hasBeforeImage = booking.beforeImagePath && booking.beforeImagePath !== '';
+                const hasAfterImage = booking.afterImagePath && booking.afterImagePath !== '';
+                const hasCompletionCode = booking.completionCode && booking.completionCode !== '';
+                const isCompleted = booking.status === 'completed';
+                
+                html += `
+                    <div class="booking-card" id="booking-${booking._id}">
+                        <div class="booking-header">
+                            <span class="customer-name"><i class="fas fa-user-circle"></i> ${booking.customerName}</span>
+                            <span class="booking-status ${booking.status === 'assigned' ? 'status-assigned' : 'status-completed'}">
+                                ${booking.status === 'assigned' ? '⚡ قيد التنفيذ' : '✅ مكتمل'}
+                            </span>
+                        </div>
+                        
+                        <div class="booking-details">
+                            <div class="detail-item"><i class="fas fa-phone"></i> ${booking.customerPhone}</div>
+                            <div class="detail-item"><i class="fas fa-briefcase"></i> ${booking.serviceName === 'cleaning' ? '🧹 تنظيف' : booking.serviceName === 'maintenance' ? '🔧 صيانة' : booking.serviceName === 'medical' ? '🏥 رعاية طبية' : '🤝 احتياجات خاصة'}</div>
+                            <div class="detail-item"><i class="fas fa-calendar"></i> ${booking.date}</div>
+                            <div class="detail-item"><i class="fas fa-clock"></i> ${booking.time}</div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i> ${booking.address.substring(0, 60)}${booking.address.length > 60 ? '...' : ''}</div>
+                        </div>
+                        ${booking.notes ? `<div class="detail-item mt-2"><i class="fas fa-sticky-note"></i> ملاحظات: ${booking.notes}</div>` : ''}
+                `;
+                
+                // Section 1: Confirm Arrival (if not verified)
+                if (!isArrivalVerified && !isCompleted) {
+                    html += `
+                        <div class="verification-section" id="arrival-section-${booking._id}">
+                            <div class="verification-title"><i class="fas fa-door-open"></i> تأكيد الوصول إلى موقع الخدمة</div>
+                            <div class="code-input-group">
+                                <input type="text" class="code-input" id="code-${booking._id}" 
+                                       placeholder="أدخل كود الوصول (6 أرقام)" maxlength="6" pattern="[0-9]{6}">
+                                <button class="btn-primary-custom" onclick="confirmArrival('${booking._id}')">
+                                    <i class="fas fa-check-circle"></i> تأكيد الوصول
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Section 2: Upload Images (اختياري - optional)
+                if (isArrivalVerified && !isCompleted) {
+                    html += `
+                        <div class="verification-section mt-2">
+                            <div class="verification-title">
+                                <i class="fas fa-camera"></i> توثيق الخدمة بالصور 
+                                <span class="optional-badge">اختياري</span>
+                            </div>
+                            <div class="upload-area">
+                                <div>
+                                    <label class="small">صورة قبل الخدمة</label>
+                                    <input type="file" class="form-control form-control-sm" id="beforeImage-${booking._id}" accept="image/*">
+                                    <button class="btn-secondary-custom mt-2" onclick="uploadBeforeImage('${booking._id}')">
+                                        <i class="fas fa-upload"></i> رفع
+                                    </button>
+                                    ${hasBeforeImage ? `<div class="image-preview mt-2"><a href="/${booking.beforeImagePath}" target="_blank"><i class="fas fa-eye"></i> مشاهدة</a></div>` : ''}
+                                </div>
+                                <div>
+                                    <label class="small">صورة بعد الخدمة</label>
+                                    <input type="file" class="form-control form-control-sm" id="afterImage-${booking._id}" accept="image/*">
+                                    <button class="btn-secondary-custom mt-2" onclick="uploadAfterImage('${booking._id}')">
+                                        <i class="fas fa-upload"></i> رفع
+                                    </button>
+                                    ${hasAfterImage ? `<div class="image-preview mt-2"><a href="/${booking.afterImagePath}" target="_blank"><i class="fas fa-eye"></i> مشاهدة</a></div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Section 3: Request Completion Code (بدون شرط الصور - فقط تأكيد الوصول)
+                if (isArrivalVerified && !hasCompletionCode && !isCompleted) {
+                    html += `
+                        <div class="verification-section mt-2" id="completion-section-${booking._id}">
+                            <div class="verification-title"><i class="fas fa-key"></i> إنهاء الخدمة</div>
+                            <button class="btn-primary-custom" onclick="requestCompletionCode('${booking._id}')">
+                                <i class="fas fa-qrcode"></i> طلب كود الإتمام
+                            </button>
+                            <div id="completionCodeDisplay-${booking._id}" class="mt-2"></div>
+                        </div>
+                    `;
+                }
+                
+                // Show completion code if exists
+                if (hasCompletionCode && !isCompleted) {
+                    html += `
+                        <div class="completion-code mt-2">
+                            <i class="fas fa-qrcode"></i> كود إتمام الخدمة:
+                            <span>${booking.completionCode}</span>
+                            <br><small class="text-muted">يرجى إعطاء هذا الكود للعميل لتأكيد الإتمام</small>
+                        </div>
+                    `;
+                }
+                
+                // Show completion message
+                if (isCompleted) {
+                    html += `
+                        <div class="verification-section mt-2" style="background: #d1fae5;">
+                            <div class="verification-title"><i class="fas fa-check-circle" style="color: #059669;"></i> الخدمة مكتملة</div>
+                            <p class="mb-0">تم تأكيد إتمام الخدمة من قبل العميل بتاريخ ${formatDate(booking.completedAt)}</p>
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function displayCompletedBookings(bookings) {
+            const container = document.getElementById('completedBookingsContainer');
+            if (!bookings || bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-history fa-3x mb-3" style="color: #64748b;"></i>
+                        <p>لا توجد خدمات منتهية بعد</p>
+                    </div>`;
+                return;
+            }
+            
+            let html = '';
+            bookings.forEach(booking => {
+                html += `
+                    <div class="booking-card" style="background: #f8fafc;">
+                        <div class="booking-header">
+                            <span class="customer-name"><i class="fas fa-user-circle"></i> ${booking.customerName}</span>
+                            <span class="booking-status status-completed">✅ مكتمل</span>
+                        </div>
+                        <div class="booking-details">
+                            <div class="detail-item"><i class="fas fa-calendar"></i> ${booking.date}</div>
+                            <div class="detail-item"><i class="fas fa-map-marker-alt"></i> ${booking.address.substring(0, 50)}</div>
+                            <div class="detail-item"><i class="fas fa-check-circle" style="color: #10b981;"></i> تم الإتمام: ${formatDate(booking.completedAt)}</div>
+                        </div>
+                        ${booking.afterImagePath ? `<div class="mt-2"><a href="/${booking.afterImagePath}" target="_blank" class="btn-secondary-custom"><i class="fas fa-camera"></i> مشاهدة صورة بعد الخدمة</a></div>` : ''}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // ========== Verification Functions ==========
+        async function confirmArrival(bookingId) {
+            const codeInput = document.getElementById(`code-${bookingId}`);
+            const code = codeInput?.value;
+            
+            if (!code || code.length !== 6) {
+                Swal.fire('تنبيه', 'يرجى إدخال كود الوصول المكون من 6 أرقام', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/worker/confirm-arrival', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentToken}`
+                    },
+                    body: JSON.stringify({ bookingId, code })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    Swal.fire({
+                        title: '✅ تم تأكيد الوصول',
+                        text: data.message,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    fetchBookings();
+                } else {
+                    Swal.fire('خطأ', data.message, 'error');
+                }
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ في الاتصال', 'error');
+            }
+        }
+
+        async function uploadBeforeImage(bookingId) {
+            const fileInput = document.getElementById(`beforeImage-${bookingId}`);
+            const file = fileInput?.files[0];
+            
+            if (!file) {
+                Swal.fire('تنبيه', 'يرجى اختيار صورة', 'warning');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('beforeImage', file);
+            
+            try {
+                const response = await fetch(`/api/worker/upload-before-image/${bookingId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${currentToken}` },
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    Swal.fire({
+                        title: '✅ تم الرفع',
+                        text: 'تم رفع الصورة قبل الخدمة',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    fetchBookings();
+                } else {
+                    Swal.fire('خطأ', data.message, 'error');
+                }
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ في رفع الصورة', 'error');
+            }
+        }
+
+        async function uploadAfterImage(bookingId) {
+            const fileInput = document.getElementById(`afterImage-${bookingId}`);
+            const file = fileInput?.files[0];
+            
+            if (!file) {
+                Swal.fire('تنبيه', 'يرجى اختيار صورة', 'warning');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('afterImage', file);
+            
+            try {
+                const response = await fetch(`/api/worker/upload-after-image/${bookingId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${currentToken}` },
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    Swal.fire({
+                        title: '✅ تم الرفع',
+                        text: 'تم رفع الصورة بعد الخدمة',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    fetchBookings();
+                } else {
+                    Swal.fire('خطأ', data.message, 'error');
+                }
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ في رفع الصورة', 'error');
+            }
+        }
+
+        async function requestCompletionCode(bookingId) {
+            try {
+                const response = await fetch(`/api/worker/request-completion-code/${bookingId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${currentToken}` }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById(`completionCodeDisplay-${bookingId}`).innerHTML = `
+                        <div class="completion-code">
+                            <i class="fas fa-qrcode"></i> كود الإتمام:
+                            <span>${data.completionCode}</span>
+                            <br><small>يرجى إعطاء هذا الكود للعميل لتأكيد الإتمام</small>
+                        </div>
+                    `;
+                    Swal.fire({
+                        title: '✅ كود الإتمام',
+                        html: `<span style="font-size: 32px; letter-spacing: 4px;">${data.completionCode}</span><br>يرجى إعطاء هذا الكود للعميل`,
+                        icon: 'success',
+                        confirmButtonText: 'حسناً'
+                    });
+                    fetchBookings();
+                } else {
+                    Swal.fire('خطأ', data.message, 'error');
+                }
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ في الاتصال', 'error');
+            }
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            if (currentToken) {
+                fetchBookings();
+                fetchStats();
+            }
+        }, 30000);
+
+        // Start
+        checkAuth();
+    </script>
+</body>
+</html>

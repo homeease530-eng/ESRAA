@@ -1,0 +1,351 @@
+<!-- <!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تواصل معنا</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    background: linear-gradient(135deg,#0a3c5d,#1F3C88,#5893D4,#8EC5FC);
+    min-height:100vh;
+}
+.contact-container{
+    display:flex;
+    flex-wrap:wrap;
+    min-height:100vh;
+}
+.info-side{
+    flex:1;
+    padding:60px 40px;
+    color:white;
+}
+.form-side{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.form-box{
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    padding:40px;
+    border-radius:20px;
+    width:90%;
+    max-width:420px;
+    color:white;
+}
+.input-group{
+    margin-bottom:20px;
+}
+.input-group input,
+.input-group textarea,
+.input-group select{
+    width:100%;
+    border:none;
+    border-radius:10px;
+    padding:15px;
+    background: rgba(255,255,255,0.2);
+    color:white;
+}
+.input-group input::placeholder,
+.input-group textarea::placeholder{
+    color:#ddd;
+}
+.btn-send{
+    width:100%;
+    height:45px;
+    border:none;
+    border-radius:10px;
+    background: #1F3C88;
+    color:white;
+    font-weight:bold;
+}
+.btn-send:hover{
+    background: #0a2a5e;
+}
+.info-box{
+    background: rgba(255,255,255,0.12);
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="contact-container">
+    <div class="info-side">
+        <h2 class="mb-4">تواصل معنا</h2>
+        <div class="info-box">📞 01065857739</div>
+        <div class="info-box">✉️ support@service.com</div>
+        <div class="info-box">⏰ نعمل 24 ساعة</div>
+        <div class="info-box">📍 كفر الشيخ - مصر</div>
+    </div>
+
+    <div class="form-side">
+        <div class="form-box">
+            <h3 class="text-center mb-3">أرسل رسالة</h3>
+
+            <div class="input-group">
+                <input type="text" id="name" class="form-control" placeholder="الاسم">
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" class="form-control" placeholder="البريد الإلكتروني">
+            </div>
+
+            <div class="input-group">
+                <select id="service" class="form-control">
+                    <option value="">اختر الخدمة</option>
+                    <option value="cleaning">تنظيف</option>
+                    <option value="maintenance">صيانة</option>
+                    <option value="medical">رعاية طبية</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <textarea id="msg" rows="4" class="form-control" placeholder="رسالتك"></textarea>
+            </div>
+
+            <button class="btn-send" onclick="sendMessage()">إرسال</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function sendMessage() {
+    // جلب البيانات
+    let name = document.getElementById('name').value;
+    let email = document.getElementById('email').value;
+    let service = document.getElementById('service').value;
+    let message = document.getElementById('msg').value;
+    
+    // التحقق
+    if (!name || !email || !service || !message) {
+        alert("❌ من فضلك املأ جميع الحقول");
+        return;
+    }
+    
+    // إرسال للباك إند
+    fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, service, message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ تم إرسال رسالتك بنجاح");
+            // تفريغ الحقول
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('service').value = '';
+            document.getElementById('msg').value = '';
+        } else {
+            alert("❌ خطأ: " + (data.error || data.message));
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("❌ تعذر الاتصال بالسيرفر");
+    });
+}
+</script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تواصل معنا</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    background: linear-gradient(135deg,#0a3c5d,#1F3C88,#5893D4,#8EC5FC);
+    min-height:100vh;
+}
+.contact-container{
+    display:flex;
+    flex-wrap:wrap;
+    min-height:100vh;
+}
+.info-side{
+    flex:1;
+    padding:60px 40px;
+    color:white;
+}
+.form-side{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.form-box{
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    padding:40px;
+    border-radius:20px;
+    width:90%;
+    max-width:420px;
+    color:white;
+}
+.input-group{
+    margin-bottom:20px;
+}
+.input-group input,
+.input-group textarea,
+.input-group select{
+    width:100%;
+    border:none;
+    border-radius:10px;
+    padding:15px;
+    background: rgba(255,255,255,0.2);
+    color:white;
+}
+.input-group input::placeholder,
+.input-group textarea::placeholder{
+    color:#ddd;
+}
+.btn-send{
+    width:100%;
+    height:45px;
+    border:none;
+    border-radius:10px;
+    background: #1F3C88;
+    color:white;
+    font-weight:bold;
+}
+.btn-send:hover{
+    background: #0a2a5e;
+}
+.info-box{
+    background: rgba(255,255,255,0.12);
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+.map-container{
+    margin-top:25px;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+<body>
+
+<div class="contact-container">
+    <div class="info-side">
+        <h2 class="mb-4">تواصل معنا</h2>
+        <div class="info-box">📞 01065857739</div>
+        <div class="info-box">✉️ support@service.com</div>
+        <div class="info-box">⏰ نعمل 24 ساعة</div>
+        <div class="info-box">📍 كفر الشيخ - مصر</div>
+        
+        <!-- خريطة كفر الشيخ -->
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d108505.77495619005!2d30.880766!3d31.111271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14f7c4f8f8f8f8f%3A0x0!2z2YXYrNin2YUg2KfZhNio2KrYp9mG!5e0!3m2!1sar!2seg!4v1700000000000!5m2!1sar!2seg"
+                width="100%" 
+                height="250" 
+                style="border:none; border-radius:10px;"
+                allowfullscreen="" 
+                loading="lazy"
+                title="خريطة كفر الشيخ">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="form-side">
+        <div class="form-box">
+            <h3 class="text-center mb-3">أرسل رسالة</h3>
+
+            <div class="input-group">
+                <input type="text" id="name" class="form-control" placeholder="الاسم">
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" class="form-control" placeholder="البريد الإلكتروني">
+            </div>
+
+            <div class="input-group">
+                <select id="service" class="form-control">
+                    <option value="">اختر الخدمة</option>
+                    <option value="cleaning">تنظيف</option>
+                    <option value="maintenance">صيانة</option>
+                    <option value="medical">رعاية طبية</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <textarea id="msg" rows="4" class="form-control" placeholder="رسالتك"></textarea>
+            </div>
+
+            <button class="btn-send" onclick="sendMessage()">إرسال</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function sendMessage() {
+    // جلب البيانات
+    let name = document.getElementById('name').value;
+    let email = document.getElementById('email').value;
+    let service = document.getElementById('service').value;
+    let message = document.getElementById('msg').value;
+    
+    // التحقق
+    if (!name || !email || !service || !message) {
+        alert("❌ من فضلك املأ جميع الحقول");
+        return;
+    }
+    
+    // إرسال للباك إند
+    fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, service, message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ تم إرسال رسالتك بنجاح");
+            // تفريغ الحقول
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('service').value = '';
+            document.getElementById('msg').value = '';
+        } else {
+            alert("❌ خطأ: " + (data.error || data.message));
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("❌ تعذر الاتصال بالسيرفر");
+    });
+}
+</script>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/667d4e9d9d7f358570d32a4f/1i1n61t1a';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>
